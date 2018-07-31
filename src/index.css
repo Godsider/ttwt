@@ -1,0 +1,30 @@
+body {
+  background-color: #1d1e22;
+}
+
+.thebox {
+    width: 536px;
+    height: 360px;
+    background: #999;
+    position: absolute;
+    top: 10px;
+    left: 30px;
+}
+
+.thepic {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-image: url(images/thepic.png);
+    /*background-image: url(http://necesitodetodos.org/wp-content/uploads/2013/09/1014169_496670120421322_891603766_n.jpg);*/
+    background-size: 100%;
+}
+
+.tag {
+    z-index: 999;
+    color: yellow;
+    font-weight: bold;
+    text-shadow: 4 4 0 #000;
+    position: absolute;
+}
+

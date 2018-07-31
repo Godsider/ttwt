@@ -1,0 +1,36 @@
+Creating a new React app in /media/small/_worx/js/ttwt.
+
+Installing packages. This might take a couple of minutes.
+Installing react, react-dom, and react-scripts...
+
+
+> uglifyjs-webpack-plugin@0.4.6 postinstall /media/small/_worx/js/ttwt/node_modules/uglifyjs-webpack-plugin
+> node lib/post_install.js
+
++ react-scripts@1.1.4
++ react@16.4.1
++ react-dom@16.4.1
+added 1319 packages in 376.668s
+
+Success! Created ttwt at /media/small/_worx/js/ttwt
+Inside that directory, you can run several commands:
+
+  npm start
+    Starts the development server.
+
+  npm run build
+    Bundles the app into static files for production.
+
+  npm test
+    Starts the test runner.
+
+  npm run eject
+    Removes this tool and copies build dependencies, configuration files
+    and scripts into the app directory. If you do this, you can’t go back!
+
+We suggest that you begin by typing:
+
+  cd ttwt
+  npm start
+
+Happy hacking!
