@@ -24,37 +24,25 @@ function Picture(props) {
   );    //
 }
 
+
 function OneTag(props) {
   //console.log("Rendering 1 tag", props);
   return (
-    <div className="tag" draggable="true" 
-      onDragStart={ props.onDragStart } 
-//+++++
-      onDragEnd={ props.onDragEnd } 
-//      onDragEnd={ (event) => {props.onDragEnd(props.num, event)} } 
-//++++++
-      style={ props.style }
+    <div className = "tag" draggable = "true" 
+      onDragStart = {( event ) => { props.onDragStart( props.num, event )}}
+      onDrag = {( event ) => { props.onDrag( props.num, event )}} 
+      onDragEnd = {( event ) => { props.onDragEnd( props.num, event )}} 
+      style = { props.style }
     >
-      &lt;Go here!
-      <button onClick={ props.onDeleteClick }>X</button>
+      { props.caption }
+      <button onClick = { props.onDeleteClick }>X</button>
     </div>
   );    //
 }
 
+
 class TagsCloud extends React.Component {
     
-  fixDrag = (num) => {  //introducing a closure for "num" within TagsCloud, `cause that`s where "num" appears
-    return (event) => {
-      this.props.drag(num, event);
-      console.log("Drag stop", arguments, num);
-      //console.log("Offs", event.dataTransfer.getData("offsetX"), event.dataTransfer.getData("offsetY"));
-      //console.log("Offs", event.nativeEvent.offsetX, event.nativeEvent.offsetY /*event.dataTransfer, event.nativeEvent.offsetX, event*/);
-      /*const tagsArray = this.state.tagsArray.slice();
-      tagsArray.splice(num, 1);
-      this.setState({ tagsArray: tagsArray });*/
-    }
-  }
-  
   render() {
     const tagsArray = this.props.tagsArray;
     const tags = tagsArray.map((elem, num) => {
@@ -62,19 +50,23 @@ class TagsCloud extends React.Component {
         left: elem.left + "px",
         top: elem.top + "px"
       }
+      //tagStyle.transform = elem.isVisible ? "translateX(0px)" : "translateX(-30px)";
       return (
         <OneTag 
           key = { num }
           num = { num }
-          style={ tagStyle } 
-          onDragStart={ this.props.onDragStart } 
+          caption = { elem.caption }
+          style = { tagStyle } 
+          isVisible = { elem.isVisible }
+          onDragStart = { this.props.onDragStart } 
+          onDrag = { this.props.onDrag }
 //           onDragEnd={ () => this.props.onDragEnd(num) } 
 //++++++++++
-          onDragEnd={ this.fixDrag(num) } 
-//           onDragEnd={ this.props.drag } 
+          //onDragEnd = { this.fixDrag(num) } 
+          onDragEnd = { this.props.onDragEnd } 
 //++++++++++
           
-          onDeleteClick={ () => this.props.onDeleteClick(num) }
+          onDeleteClick = { () => this.props.onDeleteClick(num) }
 //           drag={this.props.drag}
         />
       );    //
@@ -85,6 +77,7 @@ class TagsCloud extends React.Component {
   }
 }
 
+
 class Labirynth extends React.Component {
   
   constructor(props) {
@@ -93,7 +86,8 @@ class Labirynth extends React.Component {
     this.picClick = this.picClick.bind(this);
     this.rmTag = this.rmTag.bind(this);
     //this.fixDrag = this.fixDrag.bind(this);
-    this.startDrag = this.startDrag.bind(this);
+    this.dragStart = this.dragStart.bind(this);
+    this.drag = this.drag.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     //console.log("Construct", this.state, this);
   }
@@ -102,8 +96,11 @@ class Labirynth extends React.Component {
     //console.log("Clicked! ");
     const tagsArray = this.state.tagsArray.slice();
     tagsArray.push({    //adding new tag to the array
-        left: event.nativeEvent.offsetX,
-        top: event.nativeEvent.offsetY
+      caption: "<-Go here",
+      left: event.nativeEvent.offsetX,
+      top: event.nativeEvent.offsetY,
+      
+      isVisible: true   //trying to control tag's source still image visibility during the drag
     });
     this.setState({ tagsArray: tagsArray });
   }
@@ -122,25 +119,48 @@ OneTag.onClick = ^
     const tagsArray = this.state.tagsArray.slice();
     tagsArray.splice(num, 1);
     this.setState({ tagsArray: tagsArray });
-    console.log("Tag del", num);
+    //console.log("Tag del", num);
   }
 
-  startDrag(event) {
+  dragStart( num, event ) {
     this.dragX = event.nativeEvent.offsetX;
     this.dragY = event.nativeEvent.offsetY;
-    console.log("Dragging", event.nativeEvent.offsetX, event.nativeEvent.offsetY);
-    /*event.dataTransfer.setData("offsetX", event.nativeEvent.offsetX);
-    event.dataTransfer.setData("offsetY", event.nativeEvent.offsetY);
-    console.log("Offs", event.dataTransfer.getData("offsetX"), event.dataTransfer.getData("offsetY"));*/
+        const t = event.target;
+        setTimeout( () => { t.classList.add("hidden"); });
+    //console.log("Dragging", this.dragX, this.dragY);
+      //const tagsArray = this.state.tagsArray.slice();
+      //tagsArray[num].isVisible = false;   //trying to hide source still image
+      //this.setState({ tagsArray: tagsArray });
+/* Trying to hide source tag image (throws exception)
+        //window.requestAnimationFrame( () => event.target.style.visibility = "hidden" );
+    setTimeout(function(event) { event.target.style.visibility = "hidden"; }, 1);
+*/
+    //console.log("Dragging", arguments, tagsArray[num]);
+    //event.dataTransfer.setData("offsetY", event.nativeEvent.offsetY);
+    //event.dataTransfer.setData("offsetX", event.nativeEvent.offsetX);
+    //console.log("Offs", event.dataTransfer.getData("offsetX"), event.dataTransfer.getData("offsetY"));
   }
-
-  dragEnd(num, event) {
-    console.log("Lab dragEnd.", arguments, event.nativeEvent.offsetX, event.nativeEvent.offsetY);
+  
+  drag( num, event ) {/*
     const tagsArray = this.state.tagsArray.slice();
-    console.log(this.dragX, this.dragY, tagsArray[num]);
+    //console.log(this.dragX, this.dragY, tagsArray[num]);
     tagsArray[num].left += event.nativeEvent.offsetX - this.dragX;
     tagsArray[num].top += event.nativeEvent.offsetY - this.dragY;
+    this.setState({ tagsArray: tagsArray });*/
+  }
+
+  dragEnd( num, event ) {
+        event.target.classList.remove("hidden");
+    const tagsArray = this.state.tagsArray.slice();
+    //console.log(this.dragX, this.dragY, tagsArray[num]);
+    tagsArray[num].left += event.nativeEvent.offsetX - this.dragX;
+    tagsArray[num].top += event.nativeEvent.offsetY - this.dragY;
+    //tagsArray[num].isVisible = true;    //trying to unhide source still image
     this.setState({ tagsArray: tagsArray });
+/* Trying to unhide source tag image
+    setTimeout(function(event) { event.target.style.visibility = ""; }, 1);
+*/
+    //console.log("Lab dragEnd");
   }
 
   render() {
@@ -148,19 +168,30 @@ OneTag.onClick = ^
     const tagsArray = this.state.tagsArray;
     return (
       //separate elements for the pic and the tag cloud to not to mix up onClick events
-      <div className="thebox">
-        <Picture onClick={ this.picClick } />   //
+      <div className = "thebox">
+        <Picture onClick = { this.picClick } />   //
         <TagsCloud
-          tagsArray={ tagsArray }
-          onDragStart={ this.startDrag }
-//           onDragEnd={ num => this.fixDrag(num) }
-          onDeleteClick={ num => this.rmTag(num) }
-          
-          drag={this.dragEnd}
+          tagsArray = { tagsArray }
+          onDragStart = { this.dragStart }
+          onDrag = { this.drag }
+          onDragEnd = { this.dragEnd }
+//           onDragEnd = { num => this.fixDrag(num) }
+          onDeleteClick = { num => this.rmTag(num) }
         />
       </div>
     );  
   }
 }
 
+
 ReactDOM.render(<Labirynth />, document.getElementById("root"));
+
+
+/*** Todo ***
+
++ dragging -- dont`t let the tag be visible at it's source position while dragging (hide source tag or update/re-render dynamically as mouse moves (onDrag))
+V dragging -- via props (not via closure) (implemented with dragStart())
+- editing of the tag caption
+- implement custom caption at tag`s creation
+- the reduxifying of the task
+*/

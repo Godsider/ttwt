@@ -28,3 +28,6 @@ body {
     position: absolute;
 }
 
+.hidden {
+  transform: translateX(-9999px);
+}
