@@ -2,6 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+/*
+<input
+    value={this.state.value}
+    onChange={(event) => this.setState({ value: event.target.value })}
+    type="text"
+/>
+*/
 
 function Picture( props ) {
   return (
@@ -117,7 +124,7 @@ ReactDOM.render( <Labirynth />, document.getElementById( "root" ));
 
 V dragging -- dont`t let the tag be visible at it's source position while dragging (hide source tag or update/re-render dynamically as mouse moves (onDrag))
 V dragging -- via props (not via closure) (implemented with dragStart())
-- editing of the tag caption*
++ editing of the tag caption
 - implement custom caption at tag`s creation
 - the reduxifying of the task
 */
