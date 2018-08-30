@@ -2,13 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-/*
-<input
-    value={this.state.value}
-    onChange={(event) => this.setState({ value: event.target.value })}
-    type="text"
-/>
-*/
+
 function Picture( props ) {
   return (
     <div className = "thepic" onClick={ props.onClick }></div>
