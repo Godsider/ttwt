@@ -23,9 +23,9 @@ body {
 
 .tag {
     z-index: 999;
-    color: yellow;
+    color: lime;
     font-weight: bold;
-    text-shadow: 4 4 0 #000;
+    /*text-shadow: 4 4 0 #000;*/
     position: absolute;
 }
 
