@@ -1,82 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import TagsCloud from './tagscloud';
 
 
 function Picture( props ) {   //renders the background picture
   return (
     <div className = "thepic" onClick= { props.onClick }></div>
   );
-}
-
-
-function OneTag( props ) {  //renders a regular tag
-  return (
-    <div className = "tag" draggable = "true" 
-      onDragStart = { event => props.onDragStart( props.num, event )}
-      onDragEnd = { event => props.onDragEnd( props.num, event )}
-      style = { props.style }
-    >
-      <span onClick = { () => props.onTagClick( props.num )}>   {/* <span> to separate onClick events for the caption and the button */}
-        { props.caption }
-      </span>
-      <button onClick = { () => props.onDeleteClick( props.num )}> X </button>
-    </div>
-  );
-}
-
-
-function OneTagEdited( props ) {  //renders a tag in an edited state
-  return (
-    <div className = "tag" style = { props.style }>
-      <input type = "text" autoFocus size="10" maxLength="15" placeholder="What's here?"
-        onFocus = { event => event.target.select() }
-        value = { props.caption }
-        onChange = { event => props.onTagChange( event.target.value, event )}
-        onKeyUp = { event => props.onKeyUp( event )}
-      />
-    </div>
-  );
-}
-
-
-class TagsCloud extends React.Component {   //renders a whole cloud of tags
-
-  render() {
-    const tagsArray = this.props.tagsArray;
-    const editedTagNum = this.props.editedTagNum;
-    const tags = tagsArray.map(( elem, num ) => {
-      const tagStyle = {
-        left: elem.left + "px",
-        top: elem.top + "px"
-      }
-      if ( editedTagNum === num ) {
-        return (   //tag in an edited state
-          <OneTagEdited
-            key = { num }
-            caption = { elem.caption }
-            style = { tagStyle } 
-            onTagChange = { this.props.onTagChange }
-            onKeyUp = { this.props.onKeyUp }
-          />
-        );
-      } else {
-        return (   //tag in a regular state
-          <OneTag 
-            key = { num }
-            num = { num }
-            caption = { elem.caption }
-            style = { tagStyle } 
-            onDragStart = { this.props.onDragStart } 
-            onDragEnd = { this.props.onDragEnd }
-            onTagClick = { this.props.onTagClick }
-            onDeleteClick = { this.props.onDeleteClick }
-          />
-        );
-      }
-    });
-    return ( tags );
-  }
 }
 
 
