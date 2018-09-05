@@ -5,7 +5,7 @@ import './index.css';
 
 function Picture( props ) {   //renders the background picture
   return (
-    <div className = "thepic" onClick={ props.onClick }></div>
+    <div className = "thepic" onClick= { props.onClick }></div>
   );
 }
 
@@ -27,7 +27,6 @@ function OneTag( props ) {  //renders a regular tag
 
 
 function OneTagEdited( props ) {  //renders a tag in an edited state
-//         onBlur = { props.onTagUnfocus }
   return (
     <div className = "tag" style = { props.style }>
       <input type = "text" autoFocus size="10" maxLength="15" placeholder="What's here?"
@@ -61,7 +60,6 @@ class TagsCloud extends React.Component {   //renders a whole cloud of tags
             onKeyUp = { this.props.onKeyUp }
           />
         );
-//                 onTagUnfocus = { this.props.onTagUnfocus }
       } else {
         return (   //tag in a regular state
           <OneTag 
@@ -97,7 +95,6 @@ class Labirynth extends React.Component {   //main component
     this.captionEditInitiate = this.captionEditInitiate.bind( this );
     this.captionEditProceed = this.captionEditProceed.bind( this );
     this.handleEditKeyPress = this.handleEditKeyPress.bind( this );
-//         this.captionEditFinalize = this.captionEditFinalize.bind( this );
     this.rmTag = this.rmTag.bind( this );
   }
 
@@ -137,6 +134,8 @@ class Labirynth extends React.Component {   //main component
         const tagsArray = this.state.tagsArray.slice();
         tagsArray[ this.state.editedTagNum ].caption = this.state.preEditingTagCaption;
         this.setState({ tagsArray: tagsArray });
+        this.captionEditFinalize();
+        break;
       case "Enter":     //finalize editing
         this.captionEditFinalize();
         break;
@@ -207,12 +206,3 @@ class Labirynth extends React.Component {   //main component
 
 ReactDOM.render( <Labirynth />, document.getElementById( "root" ));
 
-
-/*** Todo ***
-
-V dragging -- dont`t let the tag be visible at it's source position while dragging (hide source tag or update/re-render dynamically as mouse moves (onDrag))
-V dragging -- via props (not via closure) (implemented with dragStart())
-+ editing of the tag caption
-+ implement custom caption at tag`s creation
-- the reduxifying of the task
-*/
