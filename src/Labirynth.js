@@ -5,7 +5,7 @@ import './index.css';
 
 function Picture( props ) {   //renders the background picture
   return (
-    <div className = "thepic" onClick= { props.onClick }></div>
+    <div className = "thepic" onClick = { props.onClick }></div>
   );
 }
 
@@ -94,6 +94,12 @@ class Labirynth extends React.Component {   //main component
     })
   }
 
+//   Picture( props ) {   //renders the background picture
+//     return (
+//       <div className = "thepic" onClick = { this.onClick }></div>
+//     );
+//   }
+
   picClick( event ) {   //creating a new tag or initiating the tag editing finalization
     if ( this.state.editedTagNum < 0 ) {    //if there is no tag under editing -- add a new tag to the array...
       const tagsArray = this.state.tagsArray.slice();
@@ -122,6 +128,7 @@ class Labirynth extends React.Component {   //main component
   }
 
   render() {
+//         <Picture onClick = { this.picClick } />
     return (
       //separating the pic and the tag cloud elements to not to mix up onClick events
       <div className = "thebox">
