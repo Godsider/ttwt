@@ -1,5 +1,5 @@
 import React from 'react';
-import { OneTag, OneTagEdited } from './onetag';
+import { OneTag, OneTagEdited } from './OneTag';
 
 
 class TagsCloud extends React.Component {   //renders a whole cloud of tags
@@ -13,7 +13,7 @@ class TagsCloud extends React.Component {   //renders a whole cloud of tags
         top: elem.top + "px"
       }
       if ( editedTagNum === num ) {
-        return (   //tag in an edited state
+        return (   //tag while under editing
           <OneTagEdited
             key = { num }
             caption = { elem.caption }
