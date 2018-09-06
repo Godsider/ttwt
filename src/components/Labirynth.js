@@ -122,7 +122,7 @@ class Labirynth extends React.Component {   //main component
 
   render() {
     return (
-      //separating the pic and the tag cloud elements to not to mix up onClick events
+      //setting the picture and the tags cloud apart to not to mix up their onClick events
       <div className = "thebox">
         { this.renderPicture() }
         <TagsCloud
@@ -133,7 +133,7 @@ class Labirynth extends React.Component {   //main component
           onTagClick = { this.captionEditInitiate }
           onTagChange = { this.captionEditProceed }
           onKeyUp = { this.handleEditKeyPress }
-              onTagUnfocus = { this.captionEditFinalize }
+//               onTagUnfocus = { this.captionEditFinalize }
           onDeleteClick = { this.rmTag }
         />
       </div>
