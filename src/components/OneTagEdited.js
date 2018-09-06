@@ -1,6 +1,5 @@
 import React from 'react';
 
-//test
 
 function OneTagEdited( props ) {  //renders a tag under editing
   return (
