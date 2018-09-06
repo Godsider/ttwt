@@ -1,6 +1,6 @@
 import React from 'react';
 import TagsCloud from './TagsCloud';
-import './index.css';
+import '../index.css';
 
 
 function Picture( props ) {   //renders the background picture

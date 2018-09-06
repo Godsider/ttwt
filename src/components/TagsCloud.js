@@ -1,6 +1,6 @@
 import React from 'react';
-import OneTag from './components/OneTag';
-import OneTagEdited from './components/OneTagEdited';
+import OneTag from './OneTag';
+import OneTagEdited from './OneTagEdited';
 
 
 class TagsCloud extends React.Component {   //renders a whole cloud of tags
