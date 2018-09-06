@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import TagsCloud from './tagscloud';
+import './index.css';
 
 
 function Picture( props ) {   //renders the background picture
@@ -17,8 +17,8 @@ class Labirynth extends React.Component {   //main component
     super( props );
     this.state = { 
       tagsArray: [],
-      editedTagNum: -1,    //number of the tag under editing; if editedTagNum < 0 -- no tags under editing
-      preEditingTagCaption: ""    //used for edit cancelling (to store pre-editing tag caption)
+      editedTagNum: -1,         //number of the tag under editing; if editedTagNum < 0 -- no tags under editing
+      preEditingTagCaption: ""  //used for edit cancelling (stores pre-editing tag caption)
     };
     this.picClick = this.picClick.bind( this );
     this.dragStart = this.dragStart.bind( this );
@@ -44,15 +44,18 @@ class Labirynth extends React.Component {   //main component
     this.setState({ tagsArray: tagsArray });
   }
 
-  captionEditInitiate( num ) {    //initiating the tag caption editing
-    this.captionEditFinalize();
+  captionEditInitiate( num ) {    //the tag caption clicked, initiating the tag caption editing
+    const { deletedTagNum, tagsArray } = this.captionEditFinalize();    //finalizing the current tag editing process (if any) before starting a new one
+    if (( deletedTagNum !== null ) && ( deletedTagNum < num )) {    //if tag deletion took place, and if deleted tags' index is below the 'num'...
+      num--;                                                        //...compensate the shift of elements within the tags array
+    }
     this.setState({
       editedTagNum: num,
-      preEditingTagCaption: this.state.tagsArray[ num ].caption   //backing up current tag caption for the case if the edit cancelling operation will be performed
+      preEditingTagCaption: tagsArray[ num ].caption   //backing up current tags' caption for the case if the edit cancelling will be performed
     });
   }
-  
-  captionEditProceed( newCaption ) {    //storing entered caption text
+
+  captionEditProceed( newCaption ) {    //storing the caption text being entered
     const tagsArray = this.state.tagsArray.slice();
     const editedTagNum = this.state.editedTagNum;
     tagsArray[ editedTagNum ].caption = newCaption;
@@ -61,7 +64,7 @@ class Labirynth extends React.Component {   //main component
 
   handleEditKeyPress( event ) {   //catching Enter and Escape keypresses
     switch ( event.key ) {
-      case "Escape":    //undo editing
+      case "Escape":    //undo changes
         const tagsArray = this.state.tagsArray.slice();
         tagsArray[ this.state.editedTagNum ].caption = this.state.preEditingTagCaption;
         this.setState({ tagsArray: tagsArray });
@@ -72,18 +75,24 @@ class Labirynth extends React.Component {   //main component
         break;
     }
   }
-  
+
   captionEditFinalize() {   //tag editing finalization routine
     const tagsArray = this.state.tagsArray.slice();
-    const editedTagNum = this.state.editedTagNum;
+    var editedTagNum = this.state.editedTagNum;
     if (( editedTagNum >= 0 ) && !tagsArray[ editedTagNum ].caption ) {   //if the edited tag got an empty caption...
-      tagsArray.splice( editedTagNum, 1 );    //...delete the tag
+      tagsArray.splice( editedTagNum, 1 );                                //...delete the tag
+    } else {
+      editedTagNum = null;                                                //nullify if no tag was deleted
     }
     this.setState({
       tagsArray: tagsArray,
       editedTagNum: -1,
       preEditingTagCaption: ""
     });
+    return ({
+      deletedTagNum: editedTagNum,  //returning the index of the deleted tag, or null if no any
+      tagsArray: tagsArray          //returning the most actual tagsArray, for those ( captionEditInitiate() ) who can't wait for state to synchronize
+    })
   }
 
   picClick( event ) {   //creating a new tag or initiating the tag editing finalization
@@ -95,7 +104,7 @@ class Labirynth extends React.Component {   //main component
         top: event.nativeEvent.offsetY
       });
       this.setState({ tagsArray: tagsArray, editedTagNum: tagsArray.length - 1 });
-    } else {    //...otherwise, go and finalize the tag editing
+    } else {                                //...otherwise, go and finalize the tag editing
       this.captionEditFinalize();
     }
   }
@@ -108,7 +117,7 @@ class Labirynth extends React.Component {   //main component
         tagsArray: tagsArray,
         editedTagNum: -1
       });
-    } else {    //...otherwise, go and finalize the tag editing
+    } else {                                //...otherwise, go and finalize the tag editing
       this.captionEditFinalize();
     }
   }
