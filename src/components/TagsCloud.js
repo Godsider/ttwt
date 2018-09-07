@@ -1,7 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import OneTag from './OneTag';
-import OneTagEdited from './OneTagEdited';
+import React from "react";
+import OneTag from "./OneTag";
+import OneTagEdited from "./OneTagEdited";
 
 
 class TagsCloud extends React.Component {   //renders a whole cloud of tags
@@ -44,32 +43,5 @@ class TagsCloud extends React.Component {   //renders a whole cloud of tags
 }
 
 
-//the default values for props
-TagsCloud.defaultProps = {
-  caption: "What's here?",
-  style: 
-  onDragStart: 
-  onDragEnd: 
-  onTagClick: 
-  onDeleteClick: 
-  onTagChange: 
-  onKeyUp: 
-};
-
-
-//typechecking of props
-TagsCloud.propTypes = {
-  key: PropTypes.number.isRequired,
-  num: PropTypes.number.isRequired,
-  caption: PropTypes.string.isRequired,
-  style: 
-  onDragStart: 
-  onDragEnd: 
-  onTagClick: 
-  onDeleteClick: 
-  onTagChange: 
-  onKeyUp: 
-}
-  
 export default TagsCloud;
 

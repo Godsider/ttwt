@@ -1,6 +1,6 @@
-import React from 'react';
-import TagsCloud from './TagsCloud';
-import '../index.css';
+import React from "react";
+import TagsCloud from "./TagsCloud";
+import "../index.css";
 
 
 class Labirynth extends React.Component {   //main component
@@ -133,7 +133,6 @@ class Labirynth extends React.Component {   //main component
           onTagClick = { this.captionEditInitiate }
           onTagChange = { this.captionEditProceed }
           onKeyUp = { this.handleEditKeyPress }
-//               onTagUnfocus = { this.captionEditFinalize }
           onDeleteClick = { this.rmTag }
         />
       </div>

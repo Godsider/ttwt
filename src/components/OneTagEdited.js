@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 
 
 function OneTagEdited( props ) {  //renders a tag under editing
@@ -12,6 +13,28 @@ function OneTagEdited( props ) {  //renders a tag under editing
       />
     </div>
   );
+}
+
+
+//the default values for props
+OneTagEdited.defaultProps = {
+  caption: "What's here?",
+  style: {
+    left: "0",
+    top: "0"
+  }
+};
+
+
+//typechecking of props
+OneTagEdited.propTypes = {
+  caption: PropTypes.string.isRequired,
+  style: PropTypes.shape({
+    left: PropTypes.string,
+    top: PropTypes.string
+  }).isRequired,
+  onTagChange: PropTypes.func.isRequired,
+  onKeyUp: PropTypes.func.isRequired
 }
 
 

@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 
 
 function OneTag( props ) {  //renders a regular tag
@@ -14,6 +15,31 @@ function OneTag( props ) {  //renders a regular tag
       <button onClick = { () => props.onDeleteClick( props.num )}> X </button>
     </div>
   );
+}
+
+
+//the default values for props
+OneTag.defaultProps = {
+  caption: "What's here?",
+  style: {
+    left: "0",
+    top: "0"
+  }
+};
+
+
+//typechecking of props
+OneTag.propTypes = {
+  num: PropTypes.number.isRequired,
+  caption: PropTypes.string.isRequired,
+  style: PropTypes.shape({
+    left: PropTypes.string,
+    top: PropTypes.string
+  }).isRequired,
+  onDragStart: PropTypes.func.isRequired,
+  onDragEnd: PropTypes.func.isRequired,
+  onTagClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired
 }
 
 
