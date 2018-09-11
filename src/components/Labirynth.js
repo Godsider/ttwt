@@ -38,12 +38,12 @@ class Labirynth extends React.Component {   //main component
 
   captionEditInitiate( num ) {    //the tag caption clicked, initiating the tag caption editing
     const { deletedTagNum, tagsArray } = this.captionEditFinalize();    //finalizing the current tag editing process (if any) before starting a new one
-    if (( deletedTagNum !== null ) && ( deletedTagNum < num )) {    //if tag deletion took place, and if deleted tags' index is below the 'num'...
+    if (( deletedTagNum !== null ) && ( deletedTagNum < num )) {    //if tag deletion took place, and if deleted tag's index is below the 'num'...
       num--;                                                        //...compensate the shift of elements within the tags array
     }
     this.setState({
       editedTagNum: num,
-      preEditingTagCaption: tagsArray[ num ].caption   //backing up current tags' caption for the case if the edit cancelling will be performed
+      preEditingTagCaption: tagsArray[ num ].caption   //backing up current tag's caption for the case if the edit cancelling will be performed
     });
   }
 
