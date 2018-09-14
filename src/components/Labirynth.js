@@ -47,34 +47,34 @@ class Labirynth extends React.Component {   //main component
     });
   }
 
-  captionEditProceed( newCaption ) {    //storing the caption text being entered
-    const tagsArray = this.state.tagsArray.slice();
-    const editedTagNum = this.state.editedTagNum;
-    tagsArray[ editedTagNum ].caption = newCaption;
-    this.setState({ tagsArray: tagsArray });
-  }
+//   captionEditProceed( newCaption ) {    //storing the caption text being entered
+//     const tagsArray = this.state.tagsArray.slice();
+//     const editedTagNum = this.state.editedTagNum;
+//     tagsArray[ editedTagNum ].caption = newCaption;
+//     this.setState({ tagsArray: tagsArray });
+//   }
 
-  handleEditKeyPress( event ) {   //catching Enter and Escape keypresses
-    switch ( event.key ) {
-      case "Escape":    //undo changes
-        const tagsArray = this.state.tagsArray.slice();
-        tagsArray[ this.state.editedTagNum ].caption = this.state.preEditingTagCaption;
-        this.setState({ tagsArray: tagsArray });
-        this.captionEditFinalize();
-        break;
-      case "Enter":     //finalize editing
-        this.captionEditFinalize();
-        break;
-    }
-  }
+//   handleEditKeyPress( event ) {   //catching Enter and Escape keypresses
+//     switch ( event.key ) {
+//       case "Escape":    //undo changes
+//         const tagsArray = this.state.tagsArray.slice();
+//         tagsArray[ this.state.editedTagNum ].caption = this.state.preEditingTagCaption;
+//         this.setState({ tagsArray: tagsArray });
+//         this.captionEditFinalize();
+//         break;
+//       case "Enter":     //finalize editing
+//         this.captionEditFinalize();
+//         break;
+//     }
+//   }
 
   captionEditFinalize() {   //tag editing finalization routine
     const tagsArray = this.state.tagsArray.slice();
     var editedTagNum = this.state.editedTagNum;
-    if (( editedTagNum >= 0 ) && !tagsArray[ editedTagNum ].caption ) {   //if the edited tag got an empty caption...
-      tagsArray.splice( editedTagNum, 1 );                                //...delete the tag
+    if (( editedTagNum >= 0 ) && !tagsArray[ editedTagNum ].caption.trim() ) {   //if the edited tag got an empty caption...
+      tagsArray.splice( editedTagNum, 1 );                                       //...delete the tag
     } else {
-      editedTagNum = null;                                                //nullify if no tag was deleted
+      editedTagNum = null;                                                       //nullify if no tag was deleted
     }
     this.setState({
       tagsArray: tagsArray,
@@ -131,8 +131,8 @@ class Labirynth extends React.Component {   //main component
           onDragStart = { this.dragStart }
           onDragEnd = { this.dragEnd }
           onTagClick = { this.captionEditInitiate }
-          onTagChange = { this.captionEditProceed }
-          onKeyUp = { this.handleEditKeyPress }
+              onTagChange = { this.captionEditProceed }
+              onKeyUp = { this.handleEditKeyPress }
           onDeleteClick = { this.rmTag }
         />
       </div>

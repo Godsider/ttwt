@@ -1,6 +1,22 @@
 import React from "react";
+import { connect } from "react-redux";
 import OneTag from "./OneTag";
+
+import { addTag } from "../redux/actions/index";
+
 import OneTagEdited from "./OneTagEdited";
+
+
+const mapStateToProps = state => {
+  return { articles: state.articles };
+};
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addTag: () => dispatch( addTag() );
+  };
+};
 
 
 class TagsCloud extends React.Component {   //renders a whole cloud of tags
@@ -17,6 +33,7 @@ class TagsCloud extends React.Component {   //renders a whole cloud of tags
         return (   //tag while under editing
           <OneTagEdited
             key = { num }
+            num = { num }
             caption = { elem.caption }
             style = { tagStyle } 
             onTagChange = { this.props.onTagChange }
@@ -41,6 +58,9 @@ class TagsCloud extends React.Component {   //renders a whole cloud of tags
     return ( tags );
   }
 }
+
+
+const OneTagEdited = connect( mapStateToProps, mapDispatchToProps )( TheOneTagEdited );
 
 
 export default TagsCloud;

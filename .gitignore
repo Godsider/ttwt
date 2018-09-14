@@ -23,3 +23,5 @@ yarn-error.log*
 # Self
 #.gitignore
 # br: drag
+
+README.md.original
