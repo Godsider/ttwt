@@ -24,10 +24,7 @@ function TheLabirynth( props ) {   // main component
         <div className = "thepic" onClick = { props.addTag }></div>
         <TagsCloud />
       </div>
-      <div>
-        <br />
-        <button onClick = { props.deleteAll }> Delete all </button>
-      </div>
+      <button className = "but" onClick = { props.deleteAll }> Delete all </button>
     </div>
   );
 }

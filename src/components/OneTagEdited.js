@@ -70,7 +70,7 @@ class TheOneTagEdited extends React.Component {  // renders a tag under editing
   render() {
     return (
       <div className = "tag" style = { this.props.style }>
-        <input type = "text" autoFocus size = "10" maxLength = "15" placeholder = "What's here?"
+        <input type = "text" autoFocus size = "15" maxLength = "20" placeholder = "What's here?"
           onFocus = { event => event.target.select() }
           value = { this.state.tagCaption }
           onChange = { this.captionEditProceed }

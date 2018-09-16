@@ -49,7 +49,7 @@ function TheTagsCloud( props ) {   // renders a whole cloud of tags
 // the default values for props
 TheTagsCloud.defaultProps = {
   tagsArray: [],      //no tags by default
-  editedTagNum: -1,   //number of the tag under editing; if editedTagNum < 0 -- no tags under editing
+  editedTagNum: -1,   //number of the tag under editing; editedTagNum < 0 means no tags under editing
 };
 
 
