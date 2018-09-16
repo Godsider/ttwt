@@ -1,11 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-// Own imports
-// import { 
-//   addTag 
-//   
-// } from "../redux/actions/index";
+// Custom imports
 import OneTag from "./OneTag";
 import OneTagEdited from "./OneTagEdited";
 
@@ -18,52 +15,48 @@ const mapStateToProps = state => {
 };
 
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     setTagCaption: ( num, newCaption ) => dispatch( setTagCaption( num, newCaption )),
-//     deleteTag: num => dispatch( deleteTag( num )),
-//   };
-// };
+function TheTagsCloud( props ) {   // renders a whole cloud of tags
+  const tagsArray = props.tagsArray.slice();
+  const editedTagNum = props.editedTagNum;
+  const tags = tagsArray.map(( elem, num ) => {
+    const tagStyle = {
+      left: elem.left + "px",
+      top: elem.top + "px"
+    }
+    if ( editedTagNum === num ) {
+      return (   //tag while under editing
+        <OneTagEdited
+          key = { num }
+          num = { num }
+          style = { tagStyle } 
+        />
+      );
+    } else {
+      return (   //tag in a regular state
+        <OneTag 
+          key = { num }
+          num = { num }
+          caption = { elem.caption }
+          style = { tagStyle }
+        />
+      );
+    }
+  });
+  return ( tags );
+}
 
 
-class TheTagsCloud extends React.Component {   //renders a whole cloud of tags
+// the default values for props
+TheTagsCloud.defaultProps = {
+  tagsArray: [],      //no tags by default
+  editedTagNum: -1,   //number of the tag under editing; if editedTagNum < 0 -- no tags under editing
+};
 
-  render() {
-    const tagsArray = this.props.tagsArray.slice();
-    const editedTagNum = this.props.editedTagNum;
-    const tags = tagsArray.map(( elem, num ) => {
-      const tagStyle = {
-        left: elem.left + "px",
-        top: elem.top + "px"
-      }
-      if ( editedTagNum === num ) {
-        return (   //tag while under editing
-          <OneTagEdited
-            key = { num }
-            num = { num }
-            style = { tagStyle } 
-          />
-        );
-//             caption = { elem.caption }
-//             onTagChange = { this.props.onTagChange }
-//             onKeyUp = { this.props.onKeyUp }
-      } else {
-        return (   //tag in a regular state
-          <OneTag 
-            key = { num }
-            num = { num }
-            caption = { elem.caption }
-            style = { tagStyle }
-          />
-        );
-//             onDragStart = { this.props.onDragStart } 
-//             onDragEnd = { this.props.onDragEnd }
-//             onTagClick = { this.props.onTagClick }
-//             onDeleteClick = { this.props.onDeleteClick }
-      }
-    });
-    return ( tags );
-  }
+
+// typechecking of props
+TheTagsCloud.propTypes = {
+  tagsArray: PropTypes.array.isRequired,
+  editedTagNum: PropTypes.number.isRequired
 }
 
 

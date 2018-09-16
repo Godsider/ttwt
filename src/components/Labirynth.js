@@ -1,164 +1,42 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-// Own imports
-import { addTag } from "../redux/actions/index";
+// Custom imports
+import { addTag, deleteAll } from "../redux/actions/index";
 import TagsCloud from "./TagsCloud";
 import "../index.css";
 
 
-// const mapStateToProps = state => {
-//   return {
-//      tagsArray : state.tagsArray,
-//     editedTagNum: state.editedTagNum,
-//   };
-// };
-
-
 const mapDispatchToProps = dispatch => {
   return {
-//     captionEditFinalize: () => dispatch( captionEditFinalize() ),
-//     setTagCaption: ( num, newCaption ) => dispatch( setTagCaption( num, newCaption )),
-//     deleteTag: num => dispatch( deleteTag( num )),
-    addTag: () => dispatch( addTag() ),
+    addTag: ( event ) => dispatch( addTag( event )),
+    deleteAll: () => dispatch( deleteAll() ),
   };
 };
 
 
-class TheLabirynth extends React.Component {   //main component
-
-//   constructor( props ) {
-//     super( props );
-//     this.state = { 
-//       tagsArray: [],
-//       editedTagNum: -1,         //number of the tag under editing; if editedTagNum < 0 -- no tags under editing
-//       preEditingTagCaption: ""  //used for edit cancelling (stores pre-editing tag caption)
-//     };
-//     this.picClick = this.picClick.bind( this );
-//     this.dragStart = this.dragStart.bind( this );
-//     this.dragEnd = this.dragEnd.bind( this );
-//     this.captionEditInitiate = this.captionEditInitiate.bind( this );
-//     this.captionEditProceed = this.captionEditProceed.bind( this );
-//     this.handleEditKeyPress = this.handleEditKeyPress.bind( this );
-//     this.rmTag = this.rmTag.bind( this );
-//   }
-
-//   dragStart( num, event ) {     //starting tag dragging
-//     this.dragX = event.nativeEvent.offsetX;
-//     this.dragY = event.nativeEvent.offsetY;
-//     const t = event.target;
-//     setTimeout( () => { t.classList.add( "hidden" )});
-//   }
-
-//   dragEnd( num, event ) {       //ending tag dragging
-//     event.target.classList.remove("hidden");
-//     const tagsArray = this.state.tagsArray.slice();
-//     tagsArray[ num ].left += event.nativeEvent.offsetX - this.dragX;
-//     tagsArray[ num ].top += event.nativeEvent.offsetY - this.dragY;
-//     this.setState({ tagsArray: tagsArray });
-//   }
-
-//   captionEditInitiate( num ) {    //the tag caption clicked, initiating the tag caption editing
-//     const { deletedTagNum, tagsArray } = this.captionEditFinalize();    //finalizing the current tag editing process (if any) before starting a new one
-//     if (( deletedTagNum !== null ) && ( deletedTagNum < num )) {    //if tag deletion took place, and if deleted tag's index is below the 'num'...
-//       num--;                                                        //...compensate the shift of elements within the tags array
-//     }
-//     this.setState({
-//       editedTagNum: num,
-//       preEditingTagCaption: tagsArray[ num ].caption   //backing up current tag's caption for the case if the edit cancelling will be performed
-//     });
-//   }
-
-//   captionEditProceed( newCaption ) {    //storing the caption text being entered
-//     const tagsArray = this.state.tagsArray.slice();
-//     const editedTagNum = this.state.editedTagNum;
-//     tagsArray[ editedTagNum ].caption = newCaption;
-//     this.setState({ tagsArray: tagsArray });
-//   }
-
-//   handleEditKeyPress( event ) {   //catching Enter and Escape keypresses
-//     switch ( event.key ) {
-//       case "Escape":    //undo changes
-//         const tagsArray = this.state.tagsArray.slice();
-//         tagsArray[ this.state.editedTagNum ].caption = this.state.preEditingTagCaption;
-//         this.setState({ tagsArray: tagsArray });
-//         this.captionEditFinalize();
-//         break;
-//       case "Enter":     //finalize editing
-//         this.captionEditFinalize();
-//         break;
-//     }
-//   }
-
-//   captionEditFinalize() {   //tag editing finalization routine
-//     const tagsArray = this.state.tagsArray.slice();
-//     var editedTagNum = this.state.editedTagNum;
-//     if (( editedTagNum >= 0 ) && !tagsArray[ editedTagNum ].caption.trim() ) {   //if the edited tag got an empty caption...
-//       tagsArray.splice( editedTagNum, 1 );                                       //...delete the tag
-//     } else {
-//       editedTagNum = null;                                                       //nullify if no tag was deleted
-//     }
-//     this.setState({
-//       tagsArray: tagsArray,
-//       editedTagNum: -1,
-//       preEditingTagCaption: ""
-//     });
-//     return ({
-//       deletedTagNum: editedTagNum,  //returning the index of the deleted tag, or null if no any
-//       tagsArray: tagsArray          //returning the most actual tagsArray, for those ( captionEditInitiate() ) who can't wait for state to synchronize
-//     })
-//   }
-
-//   rmTag( num ) {    //tag delete button clicked
-//     if ( this.state.editedTagNum < 0 ) {    //if there is no tag under editing -- delete a tag...
-//       const tagsArray = this.state.tagsArray.slice();
-//       tagsArray.splice( num, 1 );
-//       this.setState({
-//         tagsArray: tagsArray,
-//         editedTagNum: -1
-//       });
-//     } else {                                //...otherwise, go and finalize the tag editing
-//       this.captionEditFinalize();
-//     }
-//   }
-
-//   renderPicture() {   //renders the background picture
-//     return (
-//       <div className = "thepic" onClick = { this.picClick }></div>
-//     );
-//   }
-
-//   picClick( event ) {   //creating a new tag or initiating the tag editing finalization
-//     if ( this.state.editedTagNum < 0 ) {    //if there is no tag under editing -- add a new tag to the array...
-//       const tagsArray = this.state.tagsArray.slice();
-//       tagsArray.push({
-//         caption: "",
-//         left: event.nativeEvent.offsetX,
-//         top: event.nativeEvent.offsetY
-//       });
-//       this.setState({ tagsArray: tagsArray, editedTagNum: tagsArray.length - 1 });
-//     } else {                                //...otherwise, go and finalize the tag editing
-//       this.captionEditFinalize();
-//     }
-//   }
-
-  render() {
-    return (
-      //setting the picture and the tags cloud apart to not to mix up their onClick events
+function TheLabirynth( props ) {   // main component
+  return (
+    // setting the picture and the tags cloud apart to not to mix up their onClick events
+    <div>
       <div className = "thebox">
-        <div className = "thepic" onClick = { this.props.addTag }></div>
+        <div className = "thepic" onClick = { props.addTag }></div>
         <TagsCloud />
       </div>
-    );
-//           tagsArray = { this.state.tagsArray }
-//               editedTagNum = { this.state.editedTagNum }
-//           onDragStart = { this.dragStart }
-//           onDragEnd = { this.dragEnd }
-//           onTagClick = { this.captionEditInitiate }
-//               onTagChange = { this.captionEditProceed }
-//               onKeyUp = { this.handleEditKeyPress }
-//           onDeleteClick = { this.rmTag }
-  }
+      <div>
+        <br />
+        <button onClick = { props.deleteAll }> Delete all </button>
+      </div>
+    </div>
+  );
+}
+
+
+// typechecking of props
+TheLabirynth.propTypes = {
+  addTag: PropTypes.func.isRequired,
+  deleteAll: PropTypes.func.isRequired
 }
 
 

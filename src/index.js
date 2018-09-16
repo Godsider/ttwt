@@ -1,20 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
-// import { render } from "react-dom";
 import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react'
 
-// import store from "./redux/store/index";
-import rootReducer from "./redux/reducers/index";
+// Custom imports
+import { persistor, store } from "./redux/store/index";
 import Labirynth from "./components/Labirynth";
-
-
-const store = createStore( rootReducer );
 
 
 ReactDOM.render(
   <Provider store = { store }>
-    <Labirynth />
+    <PersistGate loading = { null } persistor = { persistor }>
+      <Labirynth />
+    </PersistGate>
   </Provider>,
   document.getElementById( "root" )
 );

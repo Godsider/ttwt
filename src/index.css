@@ -6,7 +6,6 @@ body {
     width: 536px;
     height: 360px;
     background: #999;
-    position: absolute;
     top: 10px;
     left: 30px;
     overflow: hidden;
