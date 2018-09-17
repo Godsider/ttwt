@@ -26,14 +26,20 @@ body {
     color: lime;
     font-weight: bold;
     /*text-shadow: 4 4 0 #000;*/
+    left: 0;
+    top: 0;
     position: absolute;
+/*    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);*/
 }
+
 
 .hidden {
-  transform: translateX(-9999px);
+#  transform: translateX(-9999px);
+  display: none;
 }
 
-.but {
+.delall {
   position: absolute;
   top: 410px;
   left: 30px;
