@@ -28,9 +28,9 @@ class TheOneTag extends React.Component { // renders a regular tag
     super(props)
     this.tagLeft = props.tagsArray[ props.num ].left // tag's initial X
     this.tagTop = props.tagsArray[ props.num ].top // tag's initial Y
-    this.dragOffsetX = null // initial dragging offset X
-    this.dragOffsetY = null // initial dragging offset Y
-    this.dragTarget = null // the tag under dragging
+    this.dragBaseX = null // a base value for calculating X coord of the dragged tag
+    this.dragBaseY = null // a base value for calculating X coord of the dragged tag
+    this.dragRef = React.createRef()
     this.underDragging = false // indicates if dragging is performing
     this.dragStart = this.dragStart.bind(this)
     this.dragProceed = this.dragProceed.bind(this)
@@ -40,15 +40,13 @@ class TheOneTag extends React.Component { // renders a regular tag
   dragStart (event) { // init dragging on mouse button press
 //           console.log('dragStart ', document.onmouseup, event.currentTarget.style.transform, event.currentTarget);
 //           console.log('dragStart2 ', event.nativeEvent.offsetX, event.nativeEvent.offsetY);
-          console.log('dragStart3 ', event.pageX, event.pageY);
+          console.log('dragStart3 ', event.pageX, event.pageY, this.dragRef.current);
     event.preventDefault();
-    if (event.button === 0) { // drag only if left button is pressed
+    if (event.button === 0) { // act only if left button is pressed
 //       ?document.getElementById('').addEventListener('mousemove', this.dragProceed) // bad way -- needs an unique ID
-//       this.tagLeft = this.props.tagsArray[ this.props.num ].left
-//       this.tagTop = this.props.tagsArray[ this.props.num ].top
-      this.dragOffsetX = event.pageX
-      this.dragOffsetY = event.pageY
-      this.dragTarget = event.currentTarget
+      this.dragBaseX = this.tagLeft - event.pageX
+      this.dragBaseY = this.tagTop - event.pageY
+      this.underDragging = false
       document.onmousemove = this.dragProceed // preferable way
       document.onmouseup = this.dragEnd
       // determine pointer offset
@@ -59,9 +57,9 @@ class TheOneTag extends React.Component { // renders a regular tag
 
   dragProceed (event) { // reposition the tag while dragging
 //           console.log('dragProceed ', event.target, event.pageX, event.pageY);
-    this.dragTarget.style.transform = 'translate('
-      + (this.tagLeft + event.pageX - this.dragOffsetX) + 'px, '
-      + (this.tagTop + event.pageY - this.dragOffsetY) + 'px)'
+    this.dragRef.current.style.transform = 'translate('
+      + (this.dragBaseX + event.pageX) + 'px, '
+      + (this.dragBaseY + event.pageY) + 'px)'
     this.underDragging = true
 //     document.onmouseup = this.dragEnd
     // if boundaries aren't violated, reposition the tag
@@ -76,11 +74,11 @@ class TheOneTag extends React.Component { // renders a regular tag
 //       ?document.getElementById('').removeEventListener... // bad way -- needs an unique ID
       document.onmousemove = null // preferable way
       document.onmouseup = null
-      if (this.underDragging) { // if dragging is performing -- finalyze dragging...
+      if (this.underDragging) { // if dragging is performing -- finalize dragging...
         this.underDragging = false
         // calculating new coords
-        this.tagLeft += event.pageX - this.dragOffsetX
-        this.tagTop += event.pageY - this.dragOffsetY
+        this.tagLeft = this.dragBaseX + event.pageX
+        this.tagTop = this.dragBaseY + event.pageY
   //       this.dragTarget.style.transform = 'translate('
   //         + this.tagLeft + 'px, '
   //         + this.tagTop + 'px)'
@@ -91,9 +89,9 @@ class TheOneTag extends React.Component { // renders a regular tag
           this.tagTop
         )
       } else { // ...otherwise initiate tag editing
-        this.props.initTagEdit(this.props.num)
+        this.props.initTagEdit(this.props.num) // !! need to finalize editing correctly (not to cancel changes)
       }
-      this.dragOffsetX = this.dragOffsetY = this.dragTarget = null
+      this.dragBaseX = this.dragBaseY = null
           console.log('End - Left button', event.pageX, event.pageY);
     }
   }
@@ -146,11 +144,9 @@ class TheOneTag extends React.Component { // renders a regular tag
       <div className='tag' draggable='false'
         onMouseDown={this.dragStart}
         style={this.props.style}
-      >   {/* <span> to separate onClick events for the caption and the button */}
-        <span 
-        >
-          { this.props.caption }
-        </span>
+        ref={this.dragRef}
+      >
+        <span>{ this.props.caption }</span> {/* <span> to separate onClick events for the caption and the button */}
         <button onClick={() => this.props.deleteTag(this.props.num)}> X </button>
       </div>
     )
